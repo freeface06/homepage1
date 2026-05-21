@@ -93,143 +93,232 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
   /* ==========================================================================
-     3. Interactive Multi-Step Survey & Waitlist Controller
+     3. Interactive Multi-Step Survey & Waitlist & Dynamic Funnel Controller
      ========================================================================== */
-  const surveyCard = document.getElementById('waitlist-survey-card');
-  const progressBar = document.getElementById('survey-progress');
-  
-  // Step elements
-  const step1 = document.getElementById('survey-step-1');
-  const step2Artist = document.getElementById('survey-step-2-artist');
-  const step2Audience = document.getElementById('survey-step-2-audience');
-  const step3 = document.getElementById('survey-step-3');
-  const successState = document.getElementById('survey-success-state');
+  const onboardingForm = document.getElementById('onboarding-form');
+  const funnelTitle = document.getElementById('funnel-title');
+  const funnelDesc = document.getElementById('funnel-desc');
+  const progressContainer = document.getElementById('funnel-progress-container');
+  const progressBar = document.getElementById('funnel-progress');
+  const prevBtn = onboardingForm ? onboardingForm.querySelector('.prev-step') : null;
+  const nextBtn = onboardingForm ? onboardingForm.querySelector('.next-step') : null;
+  const submitBtn = onboardingForm ? onboardingForm.querySelector('.submit-waitlist') : null;
+  const funnelComplete = document.getElementById('funnel-complete');
+  const statsBlock = document.getElementById('funnel-stats-block');
+  const statsUsers = document.getElementById('stats-users');
+  const toast = document.getElementById('toast-message');
 
-  // Interactive trigger options
-  const roleArtistBtn = document.getElementById('role-artist');
-  const roleAudienceBtn = document.getElementById('role-audience');
-
-  // Navigation buttons
-  const btnStep1Next = document.getElementById('btn-step1-next');
-  const btnArtistBack = document.getElementById('btn-artist-back');
-  const btnArtistNext = document.getElementById('btn-artist-next');
-  const btnAudienceBack = document.getElementById('btn-audience-back');
-  const btnAudienceNext = document.getElementById('btn-audience-next');
-  const btnFormBack = document.getElementById('btn-form-back');
-  const btnFormSubmit = document.getElementById('btn-form-submit');
-
-  // Form elements
-  const waitlistForm = document.getElementById('waitlist-form');
+  // Input Field Controls
+  const userRoleInput = document.getElementById('user-role');
+  const phoneGroup = document.getElementById('phone-group');
   const userPhoneInput = document.getElementById('user-phone');
 
-  // State Management
-  let surveyState = {
-    role: null,          // 'artist' or 'audience'
-    preference: null,    // chosen need / feature
-    phone: ''
-  };
-
-  function updateProgressBar(percentage) {
-    if (progressBar) {
-      progressBar.style.width = `${percentage}%`;
+  // Helper to toggle role-specific waitlist fields
+  function updateRoleFields(role) {
+    if (userRoleInput) {
+      if (role === 'artist') {
+        userRoleInput.value = 'artist';
+      } else {
+        userRoleInput.value = 'audience';
+      }
     }
   }
 
-  // Step 1 option handlers
-  if (roleArtistBtn && roleAudienceBtn) {
-    roleArtistBtn.addEventListener('click', () => {
-      roleArtistBtn.classList.add('selected');
-      roleAudienceBtn.classList.remove('selected');
-      surveyState.role = 'artist';
-      btnStep1Next.removeAttribute('disabled');
-    });
+  // Privacy Policy Modal Controllers
+  const privacyModal = document.getElementById('privacy-modal');
+  const openPrivacyLink = document.getElementById('open-privacy-modal');
+  const closePrivacyBtn = document.getElementById('close-privacy-modal');
+  const agreePrivacyBtn = document.getElementById('btn-modal-agree');
+  const privacyCheck = document.getElementById('privacy-check');
 
-    roleAudienceBtn.addEventListener('click', () => {
-      roleAudienceBtn.classList.add('selected');
-      roleArtistBtn.classList.remove('selected');
-      surveyState.role = 'audience';
-      btnStep1Next.removeAttribute('disabled');
+  if (openPrivacyLink && privacyModal) {
+    openPrivacyLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      privacyModal.classList.add('show');
     });
   }
 
-  // Step 1 navigation
-  if (btnStep1Next) {
-    btnStep1Next.addEventListener('click', () => {
-      step1.classList.remove('active');
-      updateProgressBar(33);
+  const closeModal = () => {
+    if (privacyModal) privacyModal.classList.remove('show');
+  };
 
-      if (surveyState.role === 'artist') {
-        step2Artist.classList.add('active');
-      } else {
-        step2Audience.classList.add('active');
+  if (closePrivacyBtn) closePrivacyBtn.addEventListener('click', closeModal);
+  if (agreePrivacyBtn && privacyCheck) {
+    agreePrivacyBtn.addEventListener('click', () => {
+      privacyCheck.checked = true;
+      closeModal();
+    });
+  }
+
+  // Close modal when clicking outside content
+  if (privacyModal) {
+    privacyModal.addEventListener('click', (e) => {
+      if (e.target === privacyModal) {
+        closeModal();
       }
     });
   }
 
-  // Helper function to bind option click logic for multi-options
-  function setupOptionClicks(containerElement, nextButton, stateProp) {
-    if (!containerElement) return;
-    const optionButtons = containerElement.querySelectorAll('.option-btn');
+  // Initial stats state loading
+  let userCount = 852;
+  if (statsUsers) {
+    statsUsers.innerHTML = `${userCount}<span>+</span>`;
+  }
+
+  // Dynamic Funnel Step Navigation Paths
+  const paths = {
+    role: ['step-role'],
+    fan: ['step-role', 'step-fan-q1', 'step-fan-q2', 'step-fan-q3', 'step-fan-q4', 'step-waitlist'],
+    artist_yes: ['step-role', 'step-art-q1', 'step-art-q1-2', 'step-art-q2', 'step-art-q3', 'step-art-q4', 'step-waitlist'],
+    artist_no: ['step-role', 'step-art-q1', 'step-art-q2', 'step-art-q3', 'step-art-q4', 'step-waitlist']
+  };
+
+  let currentPath = paths.role;
+  let currentIndex = 0;
+
+  function getActiveStepId() {
+    return currentPath[currentIndex];
+  }
+
+  // Helper to update path based on selections
+  function updatePathFromSelections() {
+    const roleEl = document.getElementById('step-role');
+    if (!roleEl) return;
+    const checkedRole = roleEl.querySelector('input[name="role_choice"]:checked');
+    if (!checkedRole) {
+      currentPath = paths.role;
+      return;
+    }
+
+    if (checkedRole.value === 'fan') {
+      currentPath = paths.fan;
+      updateRoleFields('fan');
+    } else if (checkedRole.value === 'artist') {
+      updateRoleFields('artist');
+      const q1El = document.getElementById('step-art-q1');
+      const checkedQ1 = q1El ? q1El.querySelector('input[name="art_q1"]:checked') : null;
+      if (checkedQ1 && checkedQ1.value === 'yes') {
+        currentPath = paths.artist_yes;
+      } else {
+        currentPath = paths.artist_no;
+      }
+    }
+  }
+
+  function updateFunnelUI() {
+    if (!onboardingForm) return;
+    const activeStepId = getActiveStepId();
     
-    optionButtons.forEach(btn => {
-      btn.addEventListener('click', () => {
-        optionButtons.forEach(b => b.classList.remove('selected'));
-        btn.classList.add('selected');
-        surveyState[stateProp] = btn.getAttribute('data-value');
-        nextButton.removeAttribute('disabled');
-      });
-    });
-  }
-
-  // Setup Step 2 options
-  setupOptionClicks(step2Artist, btnArtistNext, 'preference');
-  setupOptionClicks(step2Audience, btnAudienceNext, 'preference');
-
-  // Back actions
-  if (btnArtistBack) {
-    btnArtistBack.addEventListener('click', () => {
-      step2Artist.classList.remove('active');
-      step1.classList.add('active');
-      updateProgressBar(0);
-    });
-  }
-
-  if (btnAudienceBack) {
-    btnAudienceBack.addEventListener('click', () => {
-      step2Audience.classList.remove('active');
-      step1.classList.add('active');
-      updateProgressBar(0);
-    });
-  }
-
-  // Step 2 Next actions
-  if (btnArtistNext) {
-    btnArtistNext.addEventListener('click', () => {
-      step2Artist.classList.remove('active');
-      step3.classList.add('active');
-      updateProgressBar(66);
-    });
-  }
-
-  if (btnAudienceNext) {
-    btnAudienceNext.addEventListener('click', () => {
-      step2Audience.classList.remove('active');
-      step3.classList.add('active');
-      updateProgressBar(66);
-    });
-  }
-
-  // Step 3 Form Back action
-  if (btnFormBack) {
-    btnFormBack.addEventListener('click', () => {
-      step3.classList.remove('active');
-      updateProgressBar(33);
-      if (surveyState.role === 'artist') {
-        step2Artist.classList.add('active');
-      } else {
-        step2Audience.classList.add('active');
+    // Show/Hide steps
+    const steps = onboardingForm.querySelectorAll('.funnel-step');
+    steps.forEach(step => {
+      step.style.display = 'none';
+      step.classList.remove('active');
+      if (step.id === activeStepId) {
+        step.style.display = 'block';
+        step.classList.add('active');
       }
     });
+
+    // Update Progress Bar
+    const totalSteps = currentPath === paths.role ? 6 : currentPath.length;
+    const progressPercent = ((currentIndex + 1) / totalSteps) * 100;
+    if (progressBar) {
+      progressBar.style.width = `${progressPercent}%`;
+    }
+
+    // Update Header Text & Navigation Buttons
+    if (activeStepId === 'step-waitlist') {
+      if (funnelTitle) funnelTitle.textContent = '멜위드 사전 예약 모집';
+      if (funnelDesc) funnelDesc.textContent = '베타 테스트 오픈 / 오픈 베타시 입력하신 연락처로 안내 문자를 발송해 드립니다.';
+      
+      if (prevBtn) prevBtn.style.display = 'inline-block';
+      if (nextBtn) nextBtn.style.display = 'none';
+      if (submitBtn) submitBtn.style.display = 'inline-block';
+    } else {
+      if (funnelTitle) funnelTitle.textContent = '멜위드 사전 수요 조사';
+      if (funnelDesc) funnelDesc.textContent = '더 좋은 로컬 문화 매칭 서비스를 만들기 위한 3초 퀵 사전 설문입니다.';
+      
+      if (prevBtn) prevBtn.style.display = currentIndex === 0 ? 'none' : 'inline-block';
+      if (nextBtn) nextBtn.style.display = 'inline-block';
+      if (submitBtn) submitBtn.style.display = 'none';
+    }
+
+    // Re-bind double cursor ring interaction for dynamically revealed option elements
+    setTimeout(bindCursorHovers, 50);
+  }
+
+  // Handle focus & click in inline-text-input to auto-check parent radio
+  document.querySelectorAll('.inline-text-input').forEach(input => {
+    input.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const radio = input.closest('.option-btn').querySelector('input[type="radio"]');
+      if (radio) radio.checked = true;
+    });
+    input.addEventListener('focus', () => {
+      const radio = input.closest('.option-btn').querySelector('input[type="radio"]');
+      if (radio) radio.checked = true;
+    });
+  });
+
+  // Next Step validation and routing
+  if (nextBtn) {
+    nextBtn.addEventListener('click', () => {
+      const activeStepEl = document.getElementById(getActiveStepId());
+      if (!activeStepEl) return;
+      const checkedOption = activeStepEl.querySelector('input[type="radio"]:checked');
+      
+      if (!checkedOption) {
+        alert('설문 답변을 하나 선택해 주세요!');
+        return;
+      }
+
+      // Custom text input validation
+      const parentLabel = checkedOption.closest('.option-btn');
+      const textInput = parentLabel ? parentLabel.querySelector('.inline-text-input') : null;
+      if (textInput && !textInput.value.trim()) {
+        alert('직접 입력 란을 작성해 주세요!');
+        textInput.focus();
+        return;
+      }
+
+      // Recalculate path before progressing
+      updatePathFromSelections();
+
+      if (currentIndex < currentPath.length - 1) {
+        currentIndex++;
+        updateFunnelUI();
+      }
+    });
+  }
+
+  // Prev Step routing
+  if (prevBtn) {
+    prevBtn.addEventListener('click', () => {
+      if (currentIndex > 0) {
+        currentIndex--;
+        // Recalculate path to maintain correct back navigation
+        updatePathFromSelections();
+        updateFunnelUI();
+      }
+    });
+  }
+
+  // Helper to extract choice value or custom text
+  function getStepAnswer(stepId) {
+    const stepEl = document.getElementById(stepId);
+    if (!stepEl) return null;
+    const checked = stepEl.querySelector('input[type="radio"]:checked');
+    if (!checked) return null;
+
+    const parentLabel = checked.closest('.option-btn');
+    const textInput = parentLabel ? parentLabel.querySelector('.inline-text-input') : null;
+    if (textInput) {
+      const labelSpan = parentLabel.querySelector('span');
+      const labelText = labelSpan ? labelSpan.textContent.replace('✏️', '').trim() : '기타';
+      return `${labelText} (${textInput.value.trim()})`;
+    }
+    return checked.value;
   }
 
   // Phone input formatting (010-0000-0000 mask format)
@@ -251,33 +340,113 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       
       e.target.value = formattedValue;
-      surveyState.phone = formattedValue;
     });
   }
 
-  // Form submission submission
-  if (waitlistForm) {
-    waitlistForm.addEventListener('submit', (e) => {
+  // Form Submit Handler
+  if (onboardingForm) {
+    onboardingForm.addEventListener('submit', (e) => {
       e.preventDefault();
+
+      const roleEl = document.getElementById('step-role');
+      const checkedRole = roleEl ? roleEl.querySelector('input[name="role_choice"]:checked')?.value : null;
       
-      if (!surveyState.phone || surveyState.phone.length < 12) {
+      let surveyData = {};
+
+      if (checkedRole === 'fan') {
+        surveyData = {
+          role: 'fan',
+          q1: getStepAnswer('step-fan-q1'),
+          q2: getStepAnswer('step-fan-q2'),
+          q3: getStepAnswer('step-fan-q3'),
+          q4: getStepAnswer('step-fan-q4')
+        };
+      } else {
+        surveyData = {
+          role: 'artist',
+          q1: getStepAnswer('step-art-q1'),
+          q1_2: getStepAnswer('step-art-q1-2') || 'N/A (경험없음)',
+          q2: getStepAnswer('step-art-q2'),
+          q3: getStepAnswer('step-art-q3'),
+          q4: getStepAnswer('step-art-q4')
+        };
+      }
+
+      // Waitlist details
+      const phone = userPhoneInput ? userPhoneInput.value : '';
+
+      if (!phone || phone.length < 12) {
         alert('올바른 휴대폰 번호를 입력해 주세요.');
         return;
       }
+      if (privacyCheck && !privacyCheck.checked) {
+        alert('개인정보 수집 및 이용에 동의해야 신청 가능합니다.');
+        return;
+      }
 
-      // Show processing loading feedback on button
-      btnFormSubmit.setAttribute('disabled', 'true');
-      btnFormSubmit.textContent = '신청 처리 중...';
+      // Show processing feedback on button
+      if (submitBtn) {
+        submitBtn.setAttribute('disabled', 'true');
+        submitBtn.textContent = '신청 처리 중...';
+      }
 
-      // Mock registration API callback delay
       setTimeout(() => {
-        step3.classList.remove('active');
-        successState.style.display = 'block';
-        updateProgressBar(100);
+        // Save consolidated data to localStorage
+        const onboardingData = JSON.parse(localStorage.getItem('melwith_onboarding') || '[]');
+        onboardingData.push({
+          survey: surveyData,
+          waitlist: { role: checkedRole, phone },
+          timestamp: new Date().toISOString()
+        });
+        localStorage.setItem('melwith_onboarding', JSON.stringify(onboardingData));
+
+        // Show custom toast message
+        if (toast) {
+          toast.textContent = `축하합니다! 사전 예약이 완료되었습니다. ✦`;
+          toast.classList.add('show');
+          
+          setTimeout(() => {
+            toast.classList.remove('show');
+          }, 3000);
+        }
         
-        // Console output to verify data submission
-        console.log('사전예약 신청이 완료되었습니다:', surveyState);
+        // Auto increment simulation count
+        userCount += 1;
+        if (statsUsers) {
+          statsUsers.innerHTML = `${userCount}<span>+</span>`;
+        }
+
+        // Transition to success screen
+        onboardingForm.style.display = 'none';
+        if (progressContainer) progressContainer.style.display = 'none';
+        if (funnelTitle) funnelTitle.style.display = 'none';
+        if (funnelDesc) funnelDesc.style.display = 'none';
+        if (funnelComplete) funnelComplete.style.display = 'block';
       }, 1000);
+    });
+  }
+
+  // Restart Funnel
+  const restartBtn = document.getElementById('btn-funnel-restart');
+  if (restartBtn) {
+    restartBtn.addEventListener('click', () => {
+      if (onboardingForm) onboardingForm.reset();
+      currentPath = paths.role;
+      currentIndex = 0;
+      
+      // Toggle visual panels back
+      if (onboardingForm) onboardingForm.style.display = 'block';
+      if (progressContainer) progressContainer.style.display = 'block';
+      if (funnelTitle) funnelTitle.style.display = 'block';
+      if (funnelDesc) funnelDesc.style.display = 'block';
+      if (funnelComplete) funnelComplete.style.display = 'none';
+      
+      if (submitBtn) {
+        submitBtn.removeAttribute('disabled');
+        submitBtn.textContent = '사전 예약 완료하기 ✦';
+      }
+
+      updateFunnelUI();
     });
   }
 

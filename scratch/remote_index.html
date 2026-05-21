@@ -3,149 +3,58 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <!-- SEO Meta Tags -->
   <title>멜위드 (Melwith) - 내 주변 1초 로컬 공연/전시 발견 플랫폼</title>
-  <meta name="description" content="검색 없는 직관적 문화 소비! 내 주변 반경 1km 안의 숨겨진 로컬 예술과 공연을 1초 만에 발견하고, 팁(Tip) 후원과 팬덤 소통으로 이어지는 신개념 로컬 컬쳐 플랫폼.">
-  <meta name="keywords" content="멜위드, Melwith, 버스킹, 길거리공연, 로컬공연, 전시, 주변공연, 아티스트후원, 팁결제, 오프라인팬미팅">
+  <meta name="description" content="위치 기반 지도 기술과 AI 큐레이션을 활용해 내 주변 1km 안의 버스킹, 전시, 인디 라이브 무대를 직관적으로 발견하고 아티스트와 실시간 소통을 즐기는 스타트업 플랫폼, 멜위드(Melwith)입니다.">
   
-  <!-- Open Graph / Facebook -->
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="http://192.168.45.43:8000/">
-  <meta property="og:title" content="멜위드 (Melwith) - 내 주변 1초 로컬 공연/전시 발견 플랫폼">
+  <!-- Open Graph / SNS Share Meta Tags -->
+  <meta property="og:title" content="멜위드 (Melwith) - 내 주변 1초 로컬 공연/전시 발견">
   <meta property="og:description" content="검색 없는 직관적 문화 소비! 내 주변 반경 1km 안의 숨겨진 로컬 예술과 공연을 1초 만에 발견하고, 팁(Tip) 후원과 팬덤 소통으로 이어지는 신개념 로컬 컬쳐 플랫폼.">
-  <meta property="og:image" content="https://lh3.googleusercontent.com/aida/ADBb0uizfgF1CHKYGfMBSI-Gu2u5GbQDdAeBter1OW8yW8Obzcm2oTCAIw3yvYhAr150V0ZHsGUVGNv2jH0jPNWtm8JjLPjEOvnD9EgkNcWkaVEYJOK6gEZhXaNFPGpEr7Mv-54HkQR-2qloNfW4kazdB9orBIpRR7NXcPUidlxUxUZIWZ5sTztfhe92FymVQy0yAXuA2nKP0nGIpHfKXHkP3JE_SZsO4x9fq02TzBt_nROIFWfj8XeVBlXjMoo">
-
-  <!-- Twitter -->
-  <meta property="twitter:card" content="summary_large_image">
-  <meta property="twitter:url" content="http://192.168.45.43:8000/">
-  <meta property="twitter:title" content="멜위드 (Melwith) - 내 주변 1초 로컬 공연/전시 발견 플랫폼">
-  <meta property="twitter:description" content="검색 없는 직관적 문화 소비! 내 주변 반경 1km 안의 숨겨진 로컬 예술과 공연을 1초 만에 발견하고, 팁(Tip) 후원과 팬덤 소통으로 이어지는 신개념 로컬 컬쳐 플랫폼.">
-
-  <!-- Favicon & Stylesheet -->
-  <link rel="stylesheet" href="style.css">
+  <meta property="og:type" content="website">
+  
+  <!-- CSS Link -->
+  <link rel="stylesheet" href="style.css?v=1.0.10">
 </head>
 <body>
 
-  <!-- Interactive Connecting Node Network (HTML5 Canvas Background) -->
-  <canvas id="network-canvas" aria-hidden="true"></canvas>
+  <!-- Background Glow Orbs -->
+  <div class="glow-orb orb-1"></div>
+  <div class="glow-orb orb-2"></div>
+  <div class="glow-orb orb-3"></div>
 
-  <!-- Floating Ambient Glows (Stripe-like Mesh) -->
-  <div class="ambient-glows-container" aria-hidden="true">
-    <div class="glow-blob glow-purple"></div>
-    <div class="glow-blob glow-indigo"></div>
-    <div class="glow-blob glow-cyan"></div>
-  </div>
-
-  <!-- Custom Cursor Elements -->
-  <div class="custom-cursor-dot" id="cursor-dot"></div>
-  <div class="custom-cursor-ring" id="cursor-ring"></div>
-
-  <!-- Header -->
-  <header class="header" id="main-header">
-    <div class="container header-container">
-      <a href="#" class="logo" id="header-logo">
-        Melwith<span class="logo-dot"></span>
-      </a>
-      
-      <nav class="nav-links" id="nav-menu">
-        <a href="#features" class="nav-link" id="nav-link-features">주요 기능</a>
-        <a href="#upcoming" class="nav-link" id="nav-link-upcoming">출시 예정 기능</a>
-        <a href="#waitlist-section" class="btn btn-primary btn-header" id="nav-cta-waitlist">사전 예약하기</a>
-      </nav>
-
-      <button class="hamburger" id="menu-toggle" aria-label="메뉴 열기">
-        <span class="hamburger-line"></span>
-        <span class="hamburger-line"></span>
-        <span class="hamburger-line"></span>
-      </button>
+  <!-- Header Nav -->
+  <header id="header">
+    <div class="container">
+      <a href="#" class="logo">Melwith<span>.</span></a>
+      <ul class="nav-links">
+        <li><a href="#features">주요 기능</a></li>
+        <li><a href="#upcoming">출시 예정 기능</a></li>
+      </ul>
+      <a href="#waitlist-section" class="btn-header">사전 예약하기</a>
     </div>
   </header>
 
-  <main>
-    <!-- Hero Section -->
-    <section class="section hero" id="hero-section">
-      <div class="container hero-grid">
-        <div class="hero-content fade-up-init">
-          <span class="badge-mono">LOCAL ART & CULTURE</span>
-          <h1 class="hero-title">뻔한 맛집 대신,<span class="hero-subtext">내 주변</span><span class="slider-container"><span class="slider-text active" id="hero-slider-text">웨이팅 없는 독립전시를</span></span><span class="highlight-purple">1초 만에.</span></h1>
-          <p class="hero-desc">뻔한 카페, 똑같은 맛집 투어는 이제 그만. 지금 내 주변에서 펼쳐지는 아티스트들의 생생한 버스킹과 숨은 공연들을 검색 없이, 웨이팅 없이 바로 마주해보세요.</p>
-          <div class="hero-actions">
-            <a href="#waitlist-section" class="btn btn-primary" id="hero-btn-waitlist">지금 사전 예약하기</a>
-            <a href="#features" class="btn btn-secondary" id="hero-btn-learn">더 알아보기</a>
+  <!-- Hero Section -->
+  <section class="hero" id="home">
+    <div class="container hero-grid">
+      <!-- Left: Introduction & Waitlist Form -->
+      <div class="hero-content">
+        <h1>내 손안에 문화예술,<br><span class="gradient-text">이제 검색없이 즐겨요!</span></h1>
+        <p>
+          뻔한 카페, 똑같은 맛집 투어는 이제 그만. 지금 내 주변에서 펼쳐지는 아티스트들의 생생한 버스킹과 숨은 공연들을 검색 없이, 웨이팅 없이 바로 마주해보세요.
+        </p>
+        <!-- Onboarding Card (Survey -> Waitlist Funnel) -->
+        <div class="waitlist-form" id="waitlist-section">
+          <!-- Promo Banner -->
+          <div class="promo-banner">
+            <span class="promo-tag">GIFT</span>
+            <span class="promo-text">오픈 베타 설문 참여 시 다이소 5천원권 증정! (추첨 100명)</span>
           </div>
-        </div>
 
-        <div class="hero-visual fade-up-init delay-200">
-          <article class="live-mock-card" id="hero-live-card">
-            <!-- Simulated street background photography for beautiful aesthetic -->
-            <div class="live-card-media" style="background-image: url('images/gallery.png');" id="hero-card-media">
-              <div class="live-tag">
-                <span class="pulse-dot" id="hero-card-pulse"></span>
-                <span id="hero-card-status">전시 진행 중</span>
-              </div>
-              <div class="live-card-overlay-content">
-                <h3 class="live-card-title" id="hero-card-title">빛의 잔상: 서재혁 개인전</h3>
-                <p class="live-card-loc" id="hero-card-loc">📍 성수 갤러리 밸리</p>
-                <div class="live-card-badge-row" id="hero-card-badges">
-                  <span class="live-genre-badge">독립전시</span>
-                  <span class="live-genre-badge">미디어 아트</span>
-                </div>
-              </div>
-            </div>
-          </article>
-        </div>
-      </div>
-      
-      <!-- Parallax waves overlay inspired by twinh.co.kr -->
-      <div class="waves-container" aria-hidden="true">
-        <svg class="parallax-waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
-          <defs>
-            <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
-          </defs>
-          <g class="parallax-layer">
-            <use xlink:href="#gentle-wave" x="48" y="0" fill="rgba(3, 7, 18, 0.7)" />
-            <use xlink:href="#gentle-wave" x="48" y="3" fill="rgba(3, 7, 18, 0.5)" />
-            <use xlink:href="#gentle-wave" x="48" y="5" fill="rgba(3, 7, 18, 0.3)" />
-            <use xlink:href="#gentle-wave" x="48" y="7" fill="var(--bg-canvas)" />
-          </g>
-        </svg>
-      </div>
-    </section>
-    
-    <!-- Infinite Hotspot Rolling Banner -->
-    <section class="section-roller" id="hotspots-roller">
-      <div class="roller-wrapper">
-        <div class="roller-track">
-          <span>📍 홍대 걷고싶은거리 버스킹 Zone</span>
-          <span>📍 신촌 스타광장 야외무대</span>
-          <span>📍 성수 갤러리밸리 독립전시</span>
-          <span>📍 대학로 마로니에공원 예술광장</span>
-          <span>📍 해운대 버스킹스퀘어</span>
-          <span>📍 여의도 한강공원 물빛광장</span>
-          <span>📍 강남스퀘어 오프라인 라운지</span>
-          <!-- Duplicate for infinite seamless scroll -->
-          <span>📍 홍대 걷고싶은거리 버스킹 Zone</span>
-          <span>📍 신촌 스타광장 야외무대</span>
-          <span>📍 성수 갤러리밸리 독립전시</span>
-          <span>📍 대학로 마로니에공원 예술광장</span>
-          <span>📍 해운대 버스킹스퀘어</span>
-          <span>📍 여의도 한강공원 물빛광장</span>
-          <span>📍 강남스퀘어 오프라인 라운지</span>
-        </div>
-      </div>
-    </section>
-
-    <!-- Survey Waitlist Section -->
-    <section class="section survey-section" id="waitlist-section">
-      <div class="container survey-wrapper fade-up-init">
-        <div class="survey-header">
-          <span class="badge-mono">Melwith Waitlist</span>
-          <h2 class="survey-title">멜위드 사전 수요 조사</h2>
-          <p class="survey-desc">더 좋은 로컬 문화 매칭 서비스를 만들기 위한 3초 퀵 사전 설문입니다.</p>
-        </div>
-
-        <div class="survey-card" id="waitlist-survey-card">
+          <div class="funnel-header" style="margin-bottom: 1.5rem;">
+            <h3 id="funnel-title">멜위드 사전 수요 조사</h3>
+            <p id="funnel-desc" style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0;">더 좋은 로컬 문화 매칭 서비스를 만들기 위한 3초 퀵 사전 설문입니다.</p>
+          </div>
+          
           <!-- Progress Bar -->
           <div class="survey-progress-bar" id="funnel-progress-container" style="margin-bottom: 1.5rem;">
             <div class="survey-progress" id="funnel-progress" style="width: 14%;"></div>
@@ -455,183 +364,186 @@
               <div class="stat-label" style="font-size: 0.75rem;">사전 신청 관객 수</div>
             </div>
           </div>
-
         </div>
       </div>
-    </section>
 
-    <!-- Core Features Section -->
-    <section class="section" id="features">
-      <div class="container">
-        <div style="margin-bottom: 60px;" class="fade-up-init">
-          <span class="badge-mono">Core Innovation</span>
-          <h2 class="section-title">멜위드가 제공하는 4가지 혁신</h2>
-        </div>
-
-        <div class="features-grid">
-          <!-- Card 1: Wide Layout (LBS Map) -->
-          <article class="feature-card wide-top fade-up-init">
-            <div class="feature-card-header">
-              <div class="feature-icon-box">📍</div>
-              <h3 class="feature-title">LBS 기반 직관적 지도 탐색</h3>
-              <p class="feature-desc">앱을 켜는 순간 내 위치 중심 반경 1km 이내에서 지금 진행 중이거나 예정된 공연/전시의 핀(Pin)들이 맵핑됩니다. 더 이상 포털이나 SNS를 방황하며 발품 팔 필요 없이 근처의 로컬 공연을 단 1초 만에 마주할 수 있습니다.</p>
+      <!-- Right: Interactive Mobile Mockup -->
+      <div class="device-container">
+        <div class="phone-mockup">
+          <div class="phone-screen">
+            <div class="phone-header">
+              <span>Melwith App v0.1-beta</span>
+              <span>100% LTE</span>
             </div>
-          </article>
-
-          <!-- Card 2: Narrow Layout (AI Curation) -->
-          <article class="feature-card narrow-top fade-up-init delay-100">
-            <div class="feature-card-header">
-              <div class="feature-icon-box">🧠</div>
-              <h3 class="feature-title">Elasticsearch AI 큐레이션</h3>
-              <p class="feature-desc">관객은 주로 본인의 명확한 장르 취향을 알기 어렵습니다. 멜위드는 대규모 데이터 분석과 Elasticsearch(ES) 매칭 알고리즘을 도입하여, 유저가 명확한 검색어를 입력하지 않더라도 취향에 완벽히 들어맞는 새로운 아티스트를 발견하게 돕습니다.</p>
-            </div>
-          </article>
-
-          <!-- Card 3: Narrow Layout (Fair Booking) -->
-          <article class="feature-card narrow-bottom-1 fade-up-init">
-            <div class="feature-card-header">
-              <div class="feature-icon-box">⚖️</div>
-              <h3 class="feature-title">평등한 예약 & 아티스트 성장</h3>
-              <p class="feature-desc">대형 아티스트에게 편중된 무대 독점 구조를 타파합니다. 파편화되어 예매가 어려웠던 로컬 공연장과 버스킹 Zone 예약 시스템을 멜위드로 일원화하여, 선착순 예약을 통해 모든 신진 아티스트에게 무대를 공평하게 분배하고 실무 가이드라인을 제공합니다.</p>
-            </div>
-          </article>
-
-          <!-- Card 4: Wide Layout (Fandom Community) -->
-          <article class="feature-card wide-bottom-2 fade-up-init delay-100">
-            <div class="feature-card-header">
-              <div class="feature-icon-box">🤝</div>
-              <h3 class="feature-title">밀착형 팬덤 커뮤니티 & 후원</h3>
-              <p class="feature-desc">공연이 끝나도 팬과의 연동은 끊기지 않습니다. 인앱 실시간 대화방을 제공하고 공연 종료 후 현장 주변 소상공인 공간과 제휴한 1:1 또는 1:N 오프라인 팬미팅을 연계합니다. 또한 애플페이/카카오페이를 통한 3초 간편 팁 결제로 아티스트의 자생력을 높입니다.</p>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- Platform Success Stats Counter Section -->
-    <section class="section stats-section" id="stats-counter-section">
-      <div class="container">
-        <div class="stats-grid">
-          <div class="stat-card fade-up-init">
-            <div class="stat-num-box">
-              <span class="count-num" data-count="2412">0</span><span class="stat-plus">+</span>
-            </div>
-            <h4 class="stat-title">매칭된 로컬 아티스트</h4>
-            <p class="stat-desc">다양한 장르의 아티스트들이 멜위드와 무대를 함께합니다.</p>
-          </div>
-          <div class="stat-card fade-up-init delay-100">
-            <div class="stat-num-box">
-              <span class="count-num" data-count="4654">0</span><span class="stat-plus">+</span>
-            </div>
-            <h4 class="stat-title">누적 매칭 버스킹/전시</h4>
-            <p class="stat-desc">길거리 곳곳에서 피어나는 다채로운 예술 무대 매칭 기록입니다.</p>
-          </div>
-          <div class="stat-card fade-up-init delay-200">
-            <div class="stat-num-box">
-              <span class="count-num" data-count="1559">0</span><span class="stat-plus">명+</span>
-            </div>
-            <h4 class="stat-title">누적 관객 응원 참여</h4>
-            <p class="stat-desc">아티스트에게 따뜻한 응원의 손길을 보내주신 실시간 지표입니다.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Upcoming Features Section -->
-    <section class="section" id="upcoming" style="border-top: 1px solid var(--border-brush);">
-      <div class="container">
-        <div style="margin-bottom: 60px;" class="fade-up-init">
-          <span class="badge-mono">Upcoming Additions</span>
-          <h2 class="section-title">출시 예정인 혁신 기능</h2>
-          <p style="color: var(--text-muted); margin-top: 8px;">단순한 매칭을 넘어, 오프라인 문화예술 소비를 한층 풍요롭게 만들 준비를 하고 있습니다.</p>
-        </div>
-
-        <div class="upcoming-grid">
-          <article class="upcoming-card fade-up-init">
-            <span class="upcoming-icon">📍</span>
-            <h3 class="upcoming-title">실시간 아티스트 트래킹</h3>
-            <p class="upcoming-desc">좋아하는 아티스트가 게릴라 버스킹이나 전시를 켤 때 실시간으로 지도에 동선이 노출되어, 누구보다 먼저 한 발 빠르게 마주할 수 있습니다.</p>
-          </article>
-
-          <article class="upcoming-card fade-up-init delay-100">
-            <span class="upcoming-icon">💵</span>
-            <h3 class="upcoming-title">스마트 팁 & 리워드</h3>
-            <p class="upcoming-desc">현금 없이도 터치 한 번으로 아티스트에게 간편하게 응원의 팁을 보내고, 누적 후원도에 따라 미공개 디지털 리워드를 잠금 해제하세요.</p>
-          </article>
-
-          <article class="upcoming-card fade-up-init delay-200">
-            <span class="upcoming-icon">💬</span>
-            <h3 class="upcoming-title">라이브 톡 & 백스테이지</h3>
-            <p class="upcoming-desc">공연 중 실시간 톡으로 마음을 나누고, 무대가 끝난 후 열리는 프라이빗 오디오 방송을 통해 아티스트 비하인드 스토리를 감상해 보세요.</p>
-          </article>
-
-          <article class="upcoming-card fade-up-init delay-300">
-            <span class="upcoming-icon">🎫</span>
-            <h3 class="upcoming-title">B2B 로컬 연계 쿠폰</h3>
-            <p class="upcoming-desc">공연장 주변 반경 500m 이내 제휴 카페나 맛집에서 바로 사용 가능한 콜라보 할인 쿠폰을 즉시 발급받아 문화 코스를 완성할 수 있습니다.</p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- Teaser Video Section -->
-    <section class="section video-section" id="teaser-video">
-      <div class="container fade-up-init">
-        <div class="video-container">
-          <div class="video-mockup" id="video-player-card">
-            <div class="video-overlay" id="video-overlay-inner">
-              <div class="play-btn">▶</div>
-              <h3 class="video-title">Melwith Teaser Video</h3>
-              <p class="video-subtitle">멜위드가 그릴 로컬 문화의 미래, 오프라인 홍보 영상이 곧 공개됩니다.</p>
-            </div>
-            <!-- Dynamic video iframe mockup placeholder -->
-            <div id="video-iframe-placeholder" style="display:none; width:100%; height:100%;">
-              <div style="background-color: var(--text-ink); width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: white;">
-                <p>🎬 멜위드 홍보 영상이 곧 탑재됩니다. 조금만 기다려주세요!</p>
+            <div class="phone-app-content">
+              <!-- Map Simulator -->
+              <div class="virtual-map">
+                <div class="map-grid"></div>
+                <div class="map-road road-h"></div>
+                <div class="map-road road-v"></div>
+                
+                <!-- Pins -->
+                <div class="map-pin pin-1" data-title="홍대 버스킹 장소 1" data-time="공연중" data-artist="아이유의 새봄공연"></div>
+                <div class="map-pin pin-2" data-title="혜화 로컬 연극 극장" data-time="18:30 시작" data-artist="극단 청춘"></div>
+                <div class="map-pin pin-3" data-title="성수 갤러리 팝업" data-time="오늘 전시" data-artist="신진 작가 3인전"></div>
+                
+                <!-- Map Overlay Card -->
+                <div class="map-overlay-card" id="map-card">
+                  <div class="overlay-img">
+                    <div class="overlay-badge">ON-AIR</div>
+                  </div>
+                  <div class="overlay-info">
+                    <h4 id="card-artist">아이유의 새봄공연</h4>
+                    <p id="card-desc">홍대 놀이터 버스킹 Zone • 공연 진행 중</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </section>
-  </main>
+      
+    </div>
+  </section>
 
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="container footer-grid">
-      <div class="footer-brand">
-        <a href="#" class="logo" style="font-size: 2rem;">
-          Melwith<span class="logo-dot"></span>
-        </a>
-        <p class="footer-text">사람들이 일상 내 가장 가까운 곳에서 문화예술을 즐기고 향유할 수 있게 돕는 로컬 예술 연결 플랫폼입니다.</p>
+  <!-- Features Section -->
+  <section class="features" id="features">
+    <div class="container">
+      <div class="section-header">
+        <h2>어디서든 예술을 만나다</h2>
+        <p>멜위드가 제공하는 4가지 혁신적인 로컬 문화예술 연결 기능입니다.</p>
       </div>
+      
+      <div class="features-grid">
+        
+        <!-- Feature 1 -->
+        <div class="feature-card">
+          <div class="feature-icon">📍</div>
+          <h3>LBS 기반 직관적 지도 탐색</h3>
+          <p>
+            앱을 켜는 순간 내 위치 중심 반경 1km 이내에서 지금 진행 중이거나 예정된 공연/전시의 핀(Pin)들이 맵핑됩니다. 더 이상 포털이나 SNS를 방황하며 발품 팔 필요 없이 근처의 로컬 공연을 단 1초 만에 마주할 수 있습니다.
+          </p>
+        </div>
 
-      <div class="footer-links-col">
-        <h4 class="footer-links-title">멜위드 채널</h4>
-        <a href="mailto:info.melwith@gmail.com" class="footer-link-item">문의하기 (info.melwith@gmail.com)</a>
-        <a href="#waitlist-section" class="footer-link-item">사전 등록 바로가기</a>
-      </div>
+        <!-- Feature 2 -->
+        <div class="feature-card">
+          <div class="feature-icon">🔍</div>
+          <h3>Elasticsearch 기반 AI 큐레이션</h3>
+          <p>
+            관객은 주로 본인의 명확한 장르 취향을 알기 어렵습니다. 멜위드는 대규모 데이터 분석과 Elasticsearch(ES) 매칭 알고리즘을 도입하여, 유저가 명확한 검색어를 입력하지 않더라도 취향에 완벽히 들어맞는 새로운 아티스트를 발견하게 돕습니다.
+          </p>
+        </div>
 
-      <div class="footer-links-col">
-        <h4 class="footer-links-title">법적 고지</h4>
-        <a href="terms.html" class="footer-link-item">서비스 이용약관</a>
-        <a href="privacy.html" class="footer-link-item">개인정보처리방침</a>
-        <a href="copyright.html" class="footer-link-item">저작권 정책 및 면책고지</a>
+        <!-- Feature 3 -->
+        <div class="feature-card">
+          <div class="feature-icon">🎟️</div>
+          <h3>평등한 예약 & 아티스트 성장</h3>
+          <p>
+            대형 아티스트에게 편중된 무대 독점 구조를 타파합니다. 파편화되어 예매가 어려웠던 로컬 공연장과 버스킹 Zone 예약 시스템을 멜위드로 일원화하여, 선착순 예약을 통해 모든 신진 아티스트에게 무대를 공평하게 분배하고 실무 가이드라인을 제공합니다.
+          </p>
+        </div>
+
+        <!-- Feature 4 -->
+        <div class="feature-card">
+          <div class="feature-icon">💬</div>
+          <h3>밀착형 팬덤 커뮤니티 & 후원</h3>
+          <p>
+            공연이 끝나도 팬과의 연동은 끊기지 않습니다. 인앱 실시간 대화방을 제공하고 공연 종료 후 현장 주변 소상공인 공간과 제휴한 1:1 또는 1:N 오프라인 팬미팅을 연계합니다. 또한 애플페이/카카오페이를 통한 3초 간편 팁 결제로 아티스트의 자생력을 높입니다.
+          </p>
+        </div>
+
       </div>
     </div>
+  </section>
 
-    <div class="container footer-bottom">
-      <p class="footer-copy">&copy; 2026 Melwith. All Rights Reserved.</p>
-      <span class="footer-meta">미래의 아티스트와 관객을 위해 치열하게 달립니다.</span>
+  <!-- Upcoming Features & Teaser Video Section -->
+  <section class="upcoming-features" id="upcoming">
+    <div class="container">
+      <div class="section-header">
+        <h2>앞으로 추가될 놀라운 기능들</h2>
+        <p>멜위드는 단순한 매칭을 넘어, 오프라인 문화예술 소비를 풍요롭게 만들 혁신 기능들을 준비하고 있습니다. 앱 출시와 함께 기대해 주세요!</p>
+      </div>
+      
+      <div class="upcoming-grid">
+        <!-- Upcoming Feature 1: Real-time map tracking -->
+        <div class="upcoming-card">
+          <div class="upcoming-badge">PRE-VIEW</div>
+          <h3>📍 실시간 아티스트 트래킹 & 동선 알림</h3>
+          <p>좋아하는 아티스트가 게릴라 버스킹이나 게릴라 전시를 켤 때 실시간으로 지도에 핑이 찍히고 이동 경로를 확인하여 한 발 먼저 직관적으로 마주할 수 있습니다.</p>
+        </div>
+
+        <!-- Upcoming Feature 2: Smart Tipping & Tipping Rewards -->
+        <div class="upcoming-card">
+          <div class="upcoming-badge">PRE-VIEW</div>
+          <h3>💵 간편 스마트 팁 & 한정판 리워드</h3>
+          <p>현금 없이도 터치 한 번으로 아티스트에게 간편하게 응원의 팁을 보내고, 누적 후원도에 따라 전용 미공개 디지털 굿즈와 현장 리워드를 잠금 해제하세요.</p>
+        </div>
+
+        <!-- Upcoming Feature 3: Live chat & voice behind -->
+        <div class="upcoming-card">
+          <div class="upcoming-badge">PRE-VIEW</div>
+          <h3>💬 라이브 대화방 & 백스테이지 보이스</h3>
+          <p>공연 중 실시간 톡으로 아티스트와 감상을 나누고, 무대가 끝난 후 열리는 프라이빗 오디오 방송을 통해 숨겨진 비하인드 스토리와 소통을 즐겨보세요.</p>
+        </div>
+
+        <!-- Upcoming Feature 4: Local Coupon coupling -->
+        <div class="upcoming-card">
+          <div class="upcoming-badge">PRE-VIEW</div>
+          <h3>🎫 로컬 거점 연계 B2B 할인 쿠폰</h3>
+          <p>공연장 주변 반경 500m 이내의 제휴 카페 및 맛집에서 즉시 사용 가능한 콜라보 할인 쿠폰을 발급해 드려 더욱 다채로운 로컬 문화 향유를 돕습니다.</p>
+        </div>
+      </div>
+
+      <!-- Teaser Video Showcase Block -->
+      <div class="teaser-video-block">
+        <div class="video-container">
+          <div class="video-overlay">
+            <div class="play-button-pulsing">
+              <svg viewBox="0 0 24 24" width="30" height="30" fill="currentColor" style="margin-left: 2px;">
+                <path d="M8 5v14l11-7z"/>
+              </svg>
+            </div>
+            <h3>Melwith Teaser Video</h3>
+            <p>멜위드가 그릴 로컬 문화의 미래, 오프라인 홍보 영상이 곧 공개됩니다.</p>
+          </div>
+          <img src="video_thumbnail.png" alt="멜위드 앱 티저 영상 썸네일" class="teaser-thumbnail">
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+  <!-- Footer Section -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="#" class="logo">Melwith<span>.</span></a>
+          <p>사람들이 일상 내 가장 가까운 곳에서 문화예술을 즐기고 향유할 수 있게 돕는 로컬 예술 연결 플랫폼입니다.</p>
+        </div>
+        <div class="footer-links">
+          <h4>멜위드 채널</h4>
+          <ul>
+            <li><a href="mailto:info.melwith@gmail.com">문의하기 (info.melwith@gmail.com)</a></li>
+            <li><a href="#waitlist-section">사전 등록</a></li>
+          </ul>
+        </div>
+        <div class="footer-legal">
+          <h4>법적 고지</h4>
+          <ul>
+            <li><a href="#" id="open-terms-link">서비스 이용약관</a></li>
+            <li><a href="#" id="open-privacy-link">개인정보처리방침</a></li>
+            <li><a href="#" id="open-copyright-link">저작권 정책 및 면책고지</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Melwith. All Rights Reserved.</p>
+        <p>미래의 아티스트와 관객을 위해 치열하게 달립니다.</p>
+      </div>
     </div>
   </footer>
-
-  <!-- Floating Quick Action Button -->
-  <a href="#waitlist-section" class="floating-cta" id="floating-quick-cta" aria-label="사전 예약하기 퀵버튼">
-    <span class="floating-cta-pulse"></span>
-    <span class="floating-cta-icon">🎁</span>
-    <span class="floating-cta-text">3초 사전 예약</span>
-  </a>
 
   <!-- Toast Notification Message -->
   <div class="toast" id="toast-message">사전 예약 신청이 완료되었습니다! ✦</div>
@@ -657,16 +569,16 @@
           </thead>
           <tbody>
             <tr>
-              <td><strong>관객 가입자</strong></td>
-              <td>연락처 (휴대전화 번호)</td>
-              <td>오픈 베타 알림 및 플랫폼 출시 정보 안내 문자(SMS) 발송, 이벤트 사은품(다이소 상품권) 전송</td>
-              <td class="term-highlight"><strong>목적 달성 시 즉시 파기</strong><br>(베타 오픈 및 사은품 발송 완료 즉시)</td>
+              <td data-title="수집 대상"><strong>관객 가입자</strong></td>
+              <td data-title="수집 항목">연락처 (휴대전화 번호)</td>
+              <td data-title="수집 및 이용 목적">오픈 베타 알림 및 플랫폼 출시 정보 안내 문자(SMS) 발송, 이벤트 사은품(다이소 상품권) 전송</td>
+              <td data-title="보유 및 이용 기간" class="term-highlight"><strong>목적 달성 시 즉시 파기</strong><br>(베타 오픈 및 사은품 발송 완료 즉시)</td>
             </tr>
             <tr>
-              <td><strong>아티스트 가입자</strong></td>
-              <td>연락처 (휴대전화 번호)</td>
-              <td>플랫폼 신청 승인 여부 및 단순 예약 알림 문자(SMS) 발송, 이벤트 사은품(다이소 상품권) 전송</td>
-              <td class="term-highlight"><strong>목적 달성 시 즉시 파기</strong><br>(안내 문자 및 사은품 발송 완료 즉시)</td>
+              <td data-title="수집 대상"><strong>아티스트 가입자</strong></td>
+              <td data-title="수집 항목">연락처 (휴대전화 번호)</td>
+              <td data-title="수집 및 이용 목적">플랫폼 신청 승인 여부 및 단순 예약 알림 문자(SMS) 발송, 이벤트 사은품(다이소 상품권) 전송</td>
+              <td data-title="보유 및 이용 기간" class="term-highlight"><strong>목적 달성 시 즉시 파기</strong><br>(안내 문자 및 사은품 발송 완료 즉시)</td>
             </tr>
           </tbody>
         </table>
@@ -677,12 +589,105 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" id="btn-modal-agree">동의 및 확인</button>
+        <button type="button" class="btn-modal-close" id="btn-modal-agree">동의 및 확인</button>
       </div>
     </div>
   </div>
 
-  <!-- Controller Script -->
-  <script src="script.js"></script>
+  <!-- Legal Policies Tabbed Modal Overlay -->
+  <div class="modal" id="legal-modal">
+    <div class="modal-content legal-modal-content">
+      <div class="modal-header">
+        <h3>멜위드 법적 고지 및 약관</h3>
+        <button type="button" class="close-modal" id="close-legal-modal">&times;</button>
+      </div>
+      <!-- Tab Navigation -->
+      <div class="legal-tabs">
+        <button type="button" class="tab-btn active" data-tab="legal-terms">이용약관</button>
+        <button type="button" class="tab-btn" data-tab="legal-privacy">개인정보처리방침</button>
+        <button type="button" class="tab-btn" data-tab="legal-copyright">저작권 정책</button>
+      </div>
+      <div class="modal-body legal-modal-body">
+        <!-- Tab 1: 서비스 이용약관 -->
+        <div class="tab-pane active" id="legal-terms">
+          <h4>멜위드 서비스 이용약관</h4>
+          <p>본 약관은 주식회사 멜위드(이하 "회사")가 제공하는 위치 기반 문화예술 매칭 플랫폼 '멜위드(Melwith)' 서비스(이하 "서비스")를 이용함에 있어 회사와 회원(관객 및 아티스트) 간의 권리, 의무, 책임사항 및 서비스 이용 절차 등을 규정함을 목적으로 합니다.</p>
+          
+          <h5>제 1 조 (약관의 명시와 개정)</h5>
+          <p>회사는 본 약관의 내용을 회원이 쉽게 알 수 있도록 웹사이트 및 앱 초기 화면에 게시합니다. 관련 법령을 위배하지 않는 범위에서 본 약관을 개정할 수 있으며, 약관 개정 시 적용일자 7일 전부터 공지사항을 통해 고지합니다.</p>
+          
+          <h5>제 2 조 (회원의 구분 및 서비스 정의)</h5>
+          <ul>
+            <li><strong>관객 회원:</strong> 플랫폼 내에서 내 주변 1km 이내의 실시간 버스킹, 전시, 인디 라이브 무대 정보를 탐색 및 관람하고 아티스트와 소통하는 회원입니다.</li>
+            <li><strong>아티스트 회원:</strong> 자신의 프로필 및 무대 정보를 등록하고, 실시간 버스킹 및 전시를 진행하며 팁 후원을 받을 수 있는 회원입니다.</li>
+          </ul>
+          
+          <h5>제 3 조 (위치기반 서비스 제공 및 수집)</h5>
+          <p>본 서비스는 회원의 실시간 위치정보(GPS 등)를 활용하여 주변의 예술 무대 매칭 지도를 구성합니다. 위치정보의 수집 방법 및 보유 기간은 회사의 위치기반서비스 이용약관(개인정보처리방침 포함)에 규정된 바에 따릅니다.</p>
+          
+          <h5>제 4 조 (아티스트의 의무 및 책임 제한)</h5>
+          <p>아티스트 회원은 공연을 진행할 때 지자체의 야외 공간 사용 승인, 버스킹 규정, 소음 기준 등 제반 법규를 준수해야 합니다. 불법 무대 개설, 소음 민원 및 기타 현장에서 발생하는 분쟁에 대하여 회사는 중개 플랫폼으로서 고의 또는 중과실이 없는 한 민형사상 책임을 지지 않으며 모든 법적 책임은 해당 아티스트에게 귀속됩니다.</p>
+          
+          <h5>제 5 조 (스마트 팁 및 결제 서비스)</h5>
+          <p>회원은 아티스트에 대한 감사의 의미로 모바일 결제를 통해 후원금(이하 "스마트 팁")을 송금할 수 있습니다. 결제와 관련된 수수료, 정산 및 환불 규정은 회사의 서비스 운영 정책 및 정산 약관에 따릅니다.</p>
+        </div>
+        
+        <!-- Tab 2: 개인정보처리방침 -->
+        <div class="tab-pane" id="legal-privacy">
+          <h4>멜위드 개인정보처리방침</h4>
+          <p>주식회사 멜위드(이하 "회사")는 정보통신망법 및 개인정보보호법 등 관련 법령에 의거하여 회원의 개인정보를 보호하고 이와 관련된 고충을 신속하게 처리할 수 있도록 다음과 같이 개인정보처리방침을 수립·공개합니다.</p>
+          
+          <h5>1. 개인정보의 수집 및 이용 목적</h5>
+          <ul>
+            <li>서비스 사전예약 신청 접수, 중복 신청 여부 확인 및 본인 식별</li>
+            <li>오픈 베타 서비스 런칭 시 오픈 알림 및 SMS/알림톡 발송</li>
+            <li>사전예약 이벤트 참가자에 대한 추첨 진행 및 이벤트 사은품(다이소 기프티콘 등) 모바일 전송</li>
+            <li>앱 가입 시 위치 정보를 활용한 주변 공연 정보 큐레이션 및 푸시 알림</li>
+          </ul>
+          
+          <h5>2. 수집하는 개인정보 항목</h5>
+          <ul>
+            <li><strong>사전 예약 및 설문 단계:</strong> 휴대전화 번호, 역할 구분(관객/아티스트), 설문 답변 내용</li>
+            <li><strong>앱 서비스 가입 시(예정):</strong> 닉네임, 프로필 사진, 이메일 주소, 위치 정보(GPS)</li>
+            <li><strong>자동 생성 수집 항목:</strong> IP 주소, 쿠키, 서비스 이용 기록, 기기 정보(OS 버전, 모델명)</li>
+          </ul>
+          
+          <h5>3. 개인정보의 보유 및 파기 기간</h5>
+          <p>회사는 개인정보 수집 및 이용목적이 달성된 후에는 해당 정보를 지체 없이 파기합니다.</p>
+          <ul>
+            <li><strong>사전예약자 정보:</strong> 서비스 정식 출시(앱 런칭) 후 3개월간 보관한 후 복구가 불가능한 방법으로 즉시 파기합니다.</li>
+            <li><strong>이벤트 사은품 발송 관련 정보:</strong> 경품 당첨자 정보 및 발송 관련 증빙 처리를 위해 세무 관계법령에 의거하여 최대 1년간 별도 보관될 수 있습니다.</li>
+            <li><strong>회원 탈퇴 시:</strong> 즉시 파기 처리됩니다.</li>
+          </ul>
+          
+          <h5>4. 개인정보의 제3자 제공 및 업무 위탁</h5>
+          <p>회사는 회원들의 개인정보를 사전 동의 없이 제3자에게 제공하지 않습니다. 단, 이벤트 모바일 사은품(기프티콘) 발송 처리를 위하여 배송 대행 가맹사에 휴대폰 번호 및 발송 대상 정보를 안전하게 위탁하며, 해당 정보는 발송 후 대행사에서 영구 폐기됩니다.</p>
+        </div>
+        
+        <!-- Tab 3: 저작권 정책 -->
+        <div class="tab-pane" id="legal-copyright">
+          <h4>저작권 정책 및 법적 고지</h4>
+          
+          <h5>1. 멜위드 저작권 및 지식재산권</h5>
+          <p>멜위드(Melwith) 플랫폼 웹사이트 및 모바일 애플리케이션 내의 텍스트, 네온 스타일 UI 그래픽 요소, 캐릭터, 이미지, 로고, 소스코드, 시스템 아키텍처 및 화면 기획에 대한 모든 지식재산권은 주식회사 멜위드(설립 준비팀)에 귀속됩니다. 회사의 서면 동의 없이 이를 무단으로 복제, 배포, 수정하거나 상업적으로 활용하는 행위는 저작권법 등 관련 법령에 의해 처벌받을 수 있습니다.</p>
+          
+          <h5>2. 아티스트 창작물에 대한 저작권 및 사용 승인</h5>
+          <p>아티스트 회원이 서비스 내 프로필, 타임라인 피드, 라이브 공연 소개글 등에 업로드한 사진, 음원, 비디오 등 창작물의 모든 저작권은 해당 아티스트에게 귀속됩니다. 다만 아티스트 회원은 자신이 업로드한 콘텐츠에 대해 회사가 서비스 노출, 예술 매칭의 최적화, 그리고 서비스 대외 홍보 목적에 한하여 플랫폼 및 소셜 미디어 채널에 노출하고 편집/활용하는 것을 허용합니다. (본 동의는 아티스트가 회원 탈퇴를 하거나 게시물을 직접 삭제할 경우 철회됩니다.)</p>
+          
+          <h5>3. 타인의 창작물 도용 금지</h5>
+          <p>관객 회원을 포함한 서비스 이용자는 플랫폼 내 아티스트의 공연 음원이나 라이브 비디오 등 창작물을 무단 녹화, 캡처, 다운로드하여 배포하거나 상업적으로 유포할 수 없습니다. 이는 아티스트의 저작권을 침해하는 행위로 법적 책임이 따를 수 있습니다.</p>
+          
+          <h5>4. 정보 변경에 대한 면책 고지</h5>
+          <p>본 사이트 및 티저 비디오, 카드 템플릿 등에 수록된 출시 예정 기능 및 사양 정보는 주식회사 멜위드의 사업 기획, 앱 개발 일정 및 지자체 제휴 상황 등에 따라 사전 고지 없이 일부 변경되거나 조정될 수 있습니다.</p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-modal-close" id="btn-legal-close">닫기</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript Link -->
+  <script src="app.js?v=1.0.10"></script>
 </body>
 </html>

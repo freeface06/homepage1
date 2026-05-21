@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- SEO Meta Tags -->
+  <title>개인정보처리방침 - 멜위드 (Melwith)</title>
+  <meta name="description" content="위치 기반 문화예술 매칭 플랫폼 멜위드(Melwith) 개인정보처리방침 페이지입니다.">
+  
+  <!-- Favicon & Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Interactive Connecting Node Network (HTML5 Canvas Background) -->
+  <canvas id="network-canvas" aria-hidden="true"></canvas>
+
+  <!-- Floating Ambient Glows (Stripe-like Mesh) -->
+  <div class="ambient-glows-container" aria-hidden="true">
+    <div class="glow-blob glow-purple"></div>
+    <div class="glow-blob glow-indigo"></div>
+    <div class="glow-blob glow-cyan"></div>
+  </div>
+
+  <!-- Custom Cursor Elements -->
+  <div class="custom-cursor-dot" id="cursor-dot"></div>
+  <div class="custom-cursor-ring" id="cursor-ring"></div>
+
+  <!-- Header -->
+  <header class="header" id="main-header" style="background: rgba(10, 6, 22, 0.7); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);">
+    <div class="container header-container">
+      <a href="index.html" class="logo" id="header-logo">
+        Melwith<span class="logo-dot"></span>
+      </a>
+      
+      <nav class="nav-links" id="nav-menu">
+        <a href="index.html" class="nav-link">홈으로</a>
+        <a href="terms.html" class="nav-link">이용약관</a>
+        <a href="privacy.html" class="nav-link active" style="color: var(--primary-light);">개인정보처리방침</a>
+        <a href="copyright.html" class="nav-link">저작권 정책</a>
+      </nav>
+
+      <button class="hamburger" id="menu-toggle" aria-label="메뉴 열기">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Legal Main Container -->
+  <main class="legal-container">
+    <div class="legal-document-card">
+      <div class="legal-content-wrapper">
+        
+        <div class="legal-header">
+          <h1 class="legal-title">개인정보처리방침</h1>
+          <p class="legal-meta">시행일자: 2026년 5월 21일</p>
+        </div>
+
+        <section class="legal-section">
+          <h4>멜위드 개인정보처리방침</h4>
+          <p>주식회사 멜위드(이하 "회사")는 정보통신망법 및 개인정보보호법 등 관련 법령에 의거하여 회원의 개인정보를 보호하고 이와 관련된 고충을 신속하게 처리할 수 있도록 다음과 같이 개인정보처리방침을 수립·공개합니다.</p>
+          
+          <h5>1. 개인정보의 수집 및 이용 목적</h5>
+          <ul>
+            <li>서비스 사전예약 신청 접수, 중복 신청 여부 확인 및 본인 식별</li>
+            <li>오픈 베타 서비스 런칭 시 오픈 알림 및 SMS/알림톡 발송</li>
+            <li>사전예약 이벤트 참가자에 대한 추첨 진행 및 이벤트 사은품(다이소 기프티콘 등) 모바일 전송</li>
+            <li>앱 가입 시 위치 정보를 활용한 주변 공연 정보 큐레이션 및 푸시 알림</li>
+          </ul>
+          
+          <h5>2. 수집하는 개인정보 항목</h5>
+          <ul>
+            <li><strong>사전 예약 및 설문 단계:</strong> 휴대전화 번호, 역할 구분(관객/아티스트), 설문 답변 내용</li>
+            <li><strong>앱 서비스 가입 시(예정):</strong> 닉네임, 프로필 사진, 이메일 주소, 위치 정보(GPS)</li>
+            <li><strong>자동 생성 수집 항목:</strong> IP 주소, 쿠키, 서비스 이용 기록, 기기 정보(OS 버전, 모델명)</li>
+          </ul>
+
+          <!-- 추가 수집 상세 표 (멜위드 고유 스타일 적용) -->
+          <div style="margin: 30px 0; overflow-x: auto;">
+            <table class="privacy-table" style="width: 100%; border-collapse: collapse; min-width: 500px;">
+              <thead>
+                <tr>
+                  <th>수집 대상</th>
+                  <th>수집 항목</th>
+                  <th>수집 및 이용 목적</th>
+                  <th>보유 및 이용 기간</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>관객 가입자</strong></td>
+                  <td>연락처 (휴대전화 번호)</td>
+                  <td>오픈 베타 알림 및 플랫폼 출시 정보 안내 문자(SMS) 발송, 이벤트 사은품(다이소 상품권) 전송</td>
+                  <td class="term-highlight"><strong>목적 달성 시 즉시 파기</strong><br>(베타 오픈 및 사은품 발송 완료 즉시)</td>
+                </tr>
+                <tr>
+                  <td><strong>아티스트 가입자</strong></td>
+                  <td>연락처 (휴대전화 번호)</td>
+                  <td>플랫폼 신청 승인 여부 및 단순 예약 알림 문자(SMS) 발송, 이벤트 사은품(다이소 상품권) 전송</td>
+                  <td class="term-highlight"><strong>목적 달성 시 즉시 파기</strong><br>(안내 문자 및 사은품 발송 완료 즉시)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          
+          <h5>3. 개인정보의 보유 및 파기 기간</h5>
+          <p>회사는 개인정보 수집 및 이용목적이 달성된 후에는 해당 정보를 지체 없이 파기합니다.</p>
+          <ul>
+            <li><strong>사전예약자 정보:</strong> 서비스 정식 출시(앱 런칭) 후 3개월간 보관한 후 복구가 불가능한 방법으로 즉시 파기합니다.</li>
+            <li><strong>이벤트 사은품 발송 관련 정보:</strong> 경품 당첨자 정보 및 발송 관련 증빙 처리를 위해 세무 관계법령에 의거하여 최대 1년간 별도 보관될 수 있습니다.</li>
+            <li><strong>회원 탈퇴 시:</strong> 즉시 파기 처리됩니다.</li>
+          </ul>
+          
+          <h5>4. 개인정보의 제3자 제공 및 업무 위탁</h5>
+          <p>회사는 회원들의 개인정보를 사전 동의 없이 제3자에게 제공하지 않습니다. 단, 이벤트 모바일 사은품(기프티콘) 발송 처리를 위하여 배송 대행 가맹사에 휴대폰 번호 및 발송 대상 정보를 안전하게 위탁하며, 해당 정보는 발송 후 대행사에서 영구 폐기됩니다.</p>
+        </section>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="logo" style="font-size: 2rem;">
+          Melwith<span class="logo-dot"></span>
+        </a>
+        <p class="footer-text">사람들이 일상 내 가장 가까운 곳에서 문화예술을 즐기고 향유할 수 있게 돕는 로컬 예술 연결 플랫폼입니다.</p>
+      </div>
+
+      <div class="footer-links-col">
+        <h4 class="footer-links-title">멜위드 채널</h4>
+        <a href="mailto:info.melwith@gmail.com" class="footer-link-item">문의하기 (info.melwith@gmail.com)</a>
+        <a href="index.html#waitlist-section" class="footer-link-item">사전 등록 바로가기</a>
+      </div>
+
+      <div class="footer-links-col">
+        <h4 class="footer-links-title">법적 고지</h4>
+        <a href="terms.html" class="footer-link-item">서비스 이용약관</a>
+        <a href="privacy.html" class="footer-link-item">개인정보처리방침</a>
+        <a href="copyright.html" class="footer-link-item">저작권 정책 및 면책고지</a>
+      </div>
+    </div>
+
+    <div class="container footer-bottom">
+      <p class="footer-copy">&copy; 2026 Melwith. All Rights Reserved.</p>
+      <span class="footer-meta">미래의 아티스트와 관객을 위해 치열하게 달립니다.</span>
+    </div>
+  </footer>
+
+  <!-- Controller Script -->
+  <script src="script.js"></script>
+</body>
+</html>
