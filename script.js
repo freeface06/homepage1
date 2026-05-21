@@ -913,4 +913,121 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+
+  /* ==========================================================================
+     10. Premium Custom Dialog Modal (Alert & Confirm Glassmorphism)
+     ========================================================================== */
+  function createMelwithModal(type, message, resolveFn = null) {
+    // Remove existing custom modal if any
+    const existing = document.getElementById('melwith-custom-modal');
+    if (existing) {
+      existing.remove();
+    }
+
+    // Create modal elements dynamically
+    const backdrop = document.createElement('div');
+    backdrop.id = 'melwith-custom-modal';
+    backdrop.className = 'melwith-modal-backdrop';
+
+    const isConfirm = (type === 'confirm');
+    
+    // Choose neon icons
+    const iconHTML = isConfirm
+      ? `<div class="melwith-modal-icon type-confirm">
+          <svg viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+          </svg>
+         </div>`
+      : `<div class="melwith-modal-icon">
+          <svg viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+         </div>`;
+
+    const titleText = isConfirm ? '확인이 필요합니다 ✦' : '안내 ✦';
+    const actionsHTML = isConfirm
+      ? `<button class="melwith-modal-btn melwith-modal-btn-cancel" id="melwith-modal-cancel">취소</button>
+         <button class="melwith-modal-btn melwith-modal-btn-confirm" id="melwith-modal-confirm">확인</button>`
+      : `<button class="melwith-modal-btn melwith-modal-btn-confirm" id="melwith-modal-confirm">확인</button>`;
+
+    backdrop.innerHTML = `
+      <div class="melwith-modal-card">
+        ${iconHTML}
+        <h3 class="melwith-modal-title">${titleText}</h3>
+        <p class="melwith-modal-message">${message}</p>
+        <div class="melwith-modal-actions">
+          ${actionsHTML}
+        </div>
+      </div>
+    `;
+
+    document.body.appendChild(backdrop);
+
+    // Apply show class on next frame for fade/zoom animation
+    requestAnimationFrame(() => {
+      backdrop.classList.add('show');
+    });
+
+    // Sync Custom Mouse Cursor effects
+    if (typeof bindCursorHovers === 'function') {
+      setTimeout(bindCursorHovers, 50);
+    } else {
+      const btns = backdrop.querySelectorAll('.melwith-modal-btn');
+      btns.forEach(btn => {
+        btn.addEventListener('mouseenter', () => document.body.classList.add('cursor-hovering'));
+        btn.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hovering'));
+      });
+    }
+
+    function closeModal(value) {
+      backdrop.classList.remove('show');
+      document.body.classList.remove('cursor-hovering');
+      
+      setTimeout(() => {
+        backdrop.remove();
+        if (resolveFn) {
+          resolveFn(value);
+        }
+      }, 400);
+    }
+
+    const confirmBtn = backdrop.querySelector('#melwith-modal-confirm');
+    const cancelBtn = backdrop.querySelector('#melwith-modal-cancel');
+
+    if (confirmBtn) {
+      confirmBtn.addEventListener('click', () => {
+        closeModal(true);
+      });
+    }
+
+    if (cancelBtn) {
+      cancelBtn.addEventListener('click', () => {
+        closeModal(false);
+      });
+    }
+
+    // Backdrop click behavior
+    backdrop.addEventListener('click', (e) => {
+      if (e.target === backdrop) {
+        closeModal(false);
+      }
+    });
+  }
+
+  // Override global window.alert & window.confirm
+  window.alert = function(message) {
+    createMelwithModal('alert', message);
+  };
+
+  window.confirm = function(message) {
+    return new Promise((resolve) => {
+      createMelwithModal('confirm', message, resolve);
+    });
+  };
+
 });
+

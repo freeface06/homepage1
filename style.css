@@ -1519,7 +1519,7 @@ p {
   left: 0;
   transform: translate(-50%, -50%);
   pointer-events: none;
-  z-index: 99999; /* 모달(10000)보다 높여 모달 팝업 위에서도 커서가 항시 노출되도록 개선 */
+  z-index: 999999; /* 모달 백드롭보다 더 높게 격상하여 모달 위에서도 커서가 항시 노출되도록 보장 */
   transition: width 0.2s ease, height 0.2s ease, background-color 0.2s ease;
 }
 
@@ -1533,7 +1533,7 @@ p {
   left: 0;
   transform: translate(-50%, -50%);
   pointer-events: none;
-  z-index: 99998; /* 모달(10000)보다 높여 모달 팝업 위에서도 링 인터랙션이 노출되도록 개선 */
+  z-index: 999998; /* 모달 백드롭보다 더 높게 격상하여 링 인터랙션이 모달 위에서도 완벽 노출되도록 보장 */
   transition: width 0.3s cubic-bezier(0.25, 1, 0.5, 1), height 0.3s cubic-bezier(0.25, 1, 0.5, 1), border-color 0.3s ease, background-color 0.3s ease;
 }
 
@@ -2164,3 +2164,157 @@ body.cursor-hovering .custom-cursor-dot {
     margin-top: 20px;
   }
 }
+
+/* ==========================================================================
+   10. Premium Custom Dialog Modal (Alert & Confirm Glassmorphism)
+   ========================================================================== */
+.melwith-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 99990; /* 커스텀 커서(999999)보다 한 단계 낮춰서 커서가 항상 위에 렌더링되게 수정 */
+  background: rgba(3, 1, 10, 0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.melwith-modal-backdrop.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.melwith-modal-card {
+  width: 90%;
+  max-width: 420px;
+  background: rgba(10, 6, 22, 0.72);
+  border: 1px solid rgba(167, 139, 250, 0.18);
+  border-radius: 24px;
+  box-shadow: var(--shadow-ambient), 0 0 50px rgba(167, 139, 250, 0.08);
+  padding: 36px 28px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  transform: scale(0.9) translateY(20px);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.melwith-modal-backdrop.show .melwith-modal-card {
+  transform: scale(1) translateY(0);
+}
+
+/* Subtle top neon border */
+.melwith-modal-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 140px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--secondary), var(--primary));
+  border-radius: 0 0 8px 8px;
+}
+
+/* Custom Neon Icons depending on type */
+.melwith-modal-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  margin: 0 auto 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(167, 139, 250, 0.08);
+  border: 1px solid rgba(167, 139, 250, 0.25);
+  box-shadow: 0 0 20px rgba(167, 139, 250, 0.12);
+  color: var(--primary);
+  transition: var(--smooth-transition);
+}
+
+.melwith-modal-icon.type-confirm {
+  background: rgba(99, 102, 241, 0.08);
+  border-color: rgba(99, 102, 241, 0.25);
+  box-shadow: 0 0 20px rgba(99, 102, 241, 0.12);
+  color: #818CF8;
+}
+
+.melwith-modal-icon svg {
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.melwith-modal-title {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin-bottom: 12px;
+  letter-spacing: -0.5px;
+}
+
+.melwith-modal-message {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+  margin-bottom: 28px;
+  word-break: keep-all;
+  white-space: pre-wrap;
+}
+
+/* Button Layout */
+.melwith-modal-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  align-items: center;
+}
+
+.melwith-modal-btn {
+  font-family: var(--font-body);
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  transition: var(--smooth-transition);
+  outline: none;
+  border: none;
+}
+
+.melwith-modal-btn-confirm {
+  background: linear-gradient(135deg, var(--secondary), var(--primary));
+  color: #FFFFFF;
+  box-shadow: 0 4px 15px rgba(167, 139, 250, 0.25);
+}
+
+.melwith-modal-btn-confirm:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(167, 139, 250, 0.35);
+}
+
+.melwith-modal-btn-cancel {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-muted);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.melwith-modal-btn-cancel:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #FFFFFF;
+  border-color: rgba(255, 255, 255, 0.15);
+  transform: translateY(-1px);
+}
+
