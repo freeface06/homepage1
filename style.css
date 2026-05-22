@@ -193,6 +193,45 @@ p {
   background-color: var(--primary);
   border-radius: 50%;
   display: inline-block;
+}
+
+.logo-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  object-fit: cover;
+  box-shadow: 0 4px 12px rgba(138, 43, 226, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  flex-shrink: 0;
+}
+
+.logo:hover .logo-icon {
+  transform: scale(1.08);
+}
+
+.logo-img {
+  height: 120px; /* Compensate for large empty padding in AI generated logo */
+  width: auto;
+  object-fit: contain;
+  display: block;
+  margin: -37px -25px -37px -15px; /* Prevent overlap with logo-icon */
+  flex-shrink: 0;
+}
+
+.footer-brand .logo-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  box-shadow: 0 6px 16px rgba(138, 43, 226, 0.5);
+}
+
+.footer-brand .logo-img {
+  height: 160px;
+  margin: -50px -35px -50px -20px; /* Prevent overlap with footer logo-icon */
+}
+
+.logo-dot {
   box-shadow: 0 0 10px var(--primary);
 }
 
@@ -1258,7 +1297,7 @@ p {
   }
   
   .slider-text {
-    text-align: center;
+    text-align: center !important;
   }
   
   .hero-actions {
@@ -1278,6 +1317,21 @@ p {
   
   .upcoming-grid {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .live-card-overlay-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .live-card-loc {
+    justify-content: center;
+  }
+  
+  .live-card-badge-row {
+    justify-content: center;
   }
 }
 
@@ -1365,7 +1419,7 @@ p {
   }
   
   .slider-text {
-    text-align: center;
+    text-align: center !important;
   }
   
   .hero-actions {
@@ -1383,6 +1437,10 @@ p {
   
   .live-card-overlay-content {
     padding: 16px 20px; /* 모바일 패딩 축소로 자식 요소 짤림 방지 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
   }
   
   .live-card-title {
@@ -1391,10 +1449,12 @@ p {
   
   .live-card-loc {
     font-size: 0.85rem; /* 모바일 위치 폰트 크기 축소 */
+    justify-content: center;
   }
   
   .live-card-badge-row {
     margin-top: 10px;
+    justify-content: center;
   }
   
   .survey-card {
@@ -1559,6 +1619,9 @@ body.cursor-hovering .custom-cursor-dot {
   body {
     cursor: none !important;
   }
+  .slider-text {
+    text-align: left;
+  }
 }
 
 @media (max-width: 1024px) {
@@ -1596,7 +1659,7 @@ body.cursor-hovering .custom-cursor-dot {
   font-weight: 800;
   white-space: nowrap;
   line-height: 1.5; /* 줄 높이를 넉넉하게 주어 짤림 방지 */
-  text-align: left;
+  text-align: center;
   letter-spacing: -0.05em; /* 촘촘하고 세련된 자간으로 가로 짤림 예방 */
   text-shadow: 0 0 20px rgba(167, 139, 250, 0.4);
 }
@@ -2317,4 +2380,94 @@ body.cursor-hovering .custom-cursor-dot {
   border-color: rgba(255, 255, 255, 0.15);
   transform: translateY(-1px);
 }
+
+/* Lucide Icons Custom Integration */
+.lucide {
+  stroke-width: 2.2px;
+  stroke: currentColor;
+  fill: none;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* Feature section Lucide box adjustment */
+.feature-icon-box i {
+  width: 24px;
+  height: 24px;
+}
+
+/* Upcoming features icons */
+.upcoming-icon {
+  width: 28px;
+  height: 28px;
+  color: var(--primary);
+  margin-bottom: 20px;
+  display: block;
+}
+.upcoming-icon i {
+  width: 100%;
+  height: 100%;
+}
+
+/* Live Card Location Pin spacing */
+.live-card-loc i {
+  margin-right: 4px;
+  width: 14px;
+  height: 14px;
+  color: var(--primary);
+}
+
+/* Rolling banner icon spacing */
+.roller-track span i {
+  margin-right: 6px;
+  width: 14px;
+  height: 14px;
+  color: var(--primary-glow);
+}
+
+/* Video Section Play Button Lucide integration */
+.play-btn {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+}
+.play-btn i {
+  width: 24px;
+  height: 24px;
+  color: #FFFFFF;
+  fill: #FFFFFF; /* make play arrow solid white */
+}
+
+/* Survey Option Button Icons alignment */
+.option-btn i {
+  margin-right: 8px;
+  width: 1.15rem;
+  height: 1.15rem;
+  vertical-align: -0.15em;
+  color: var(--primary);
+}
+
+/* Placeholder clapper icon */
+#video-iframe-placeholder p i {
+  margin-right: 6px;
+  vertical-align: middle;
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+}
+
+/* Complete screen sparkles icon */
+.complete-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--primary);
+  filter: drop-shadow(0 0 10px rgba(167, 139, 250, 0.4));
+  margin-bottom: 1.5rem;
+}
+.complete-icon i {
+  width: 48px;
+  height: 48px;
+}
+
 

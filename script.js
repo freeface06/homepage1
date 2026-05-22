@@ -1,5 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
 
+  // Initialize Lucide Icons
+  if (window.lucide) {
+    window.lucide.createIcons();
+  }
+
   /* ==========================================================================
      1. Header & Navigation Controller
      ========================================================================== */
@@ -562,7 +567,7 @@ document.addEventListener('DOMContentLoaded', () => {
     {
       status: "전시 진행 중",
       title: "빛의 잔상: 서재혁 개인전",
-      loc: "📍 성수 갤러리 밸리",
+      loc: "성수 갤러리 밸리",
       badges: ["독립전시", "미디어 아트"],
       bg: "images/gallery.png",
       pulseColor: "#8408E9"
@@ -570,7 +575,7 @@ document.addEventListener('DOMContentLoaded', () => {
     {
       status: "공연 진행 중",
       title: "아이유의 새봄공연",
-      loc: "📍 홍대 놀이터 버스킹 Zone",
+      loc: "홍대 놀이터 버스킹 Zone",
       badges: ["인디 음악", "보컬"],
       bg: "images/busking.png",
       pulseColor: "#FF2E93"
@@ -578,7 +583,7 @@ document.addEventListener('DOMContentLoaded', () => {
     {
       status: "공연 예정",
       title: "첼리스트 김도원의 라이브 클래식",
-      loc: "📍 신촌 스타광장 야외무대",
+      loc: "신촌 스타광장 야외무대",
       badges: ["클래식", "첼로"],
       bg: "images/cello.png",
       pulseColor: "#4F46E5"
@@ -586,7 +591,7 @@ document.addEventListener('DOMContentLoaded', () => {
     {
       status: "원데이 클래스",
       title: "도예가 정민우의 핸즈온 워크숍",
-      loc: "📍 대학로 예술광장 아뜰리에",
+      loc: "대학로 예술광장 아뜰리에",
       badges: ["도예", "원데이 클래스"],
       bg: "images/workshop.png",
       pulseColor: "#10B981"
@@ -649,7 +654,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (cardMedia) cardMedia.style.backgroundImage = `url('${data.bg}')`;
       if (cardStatus) cardStatus.textContent = data.status;
       if (cardTitle) cardTitle.textContent = data.title;
-      if (cardLoc) cardLoc.textContent = data.loc;
+      if (cardLoc) cardLoc.innerHTML = `<i data-lucide="map-pin"></i> ${data.loc}`;
       
       if (cardBadges) {
         cardBadges.innerHTML = data.badges.map(b => `<span class="live-genre-badge">${b}</span>`).join('');
@@ -657,6 +662,11 @@ document.addEventListener('DOMContentLoaded', () => {
       
       if (cardPulse && data.pulseColor) {
         cardPulse.style.backgroundColor = data.pulseColor;
+      }
+      
+      // Re-trigger Lucide to parse the newly created dynamic map-pin icon
+      if (window.lucide) {
+        window.lucide.createIcons();
       }
       
       // Snap text to bottom for entrance
