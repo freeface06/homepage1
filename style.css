@@ -1683,7 +1683,7 @@ body.cursor-hovering .custom-cursor-dot {
   font-weight: 800;
   white-space: nowrap;
   line-height: 1.5; /* 줄 높이를 넉넉하게 주어 짤림 방지 */
-  text-align: center;
+  text-align: left;
   letter-spacing: -0.05em; /* 촘촘하고 세련된 자간으로 가로 짤림 예방 */
   text-shadow: 0 0 20px rgba(167, 139, 250, 0.4);
 }
@@ -2223,6 +2223,18 @@ body.cursor-hovering .custom-cursor-dot {
 .legal-section strong {
   color: #FFFFFF;
   font-weight: 600;
+}
+
+.legal-section a {
+  color: var(--primary-light);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  transition: color 0.2s ease, text-shadow 0.2s ease;
+}
+
+.legal-section a:hover {
+  color: var(--primary-hover);
+  text-shadow: 0 0 8px var(--primary);
 }
 
 /* Mobile responsive styles for legal pages */
