@@ -744,16 +744,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
   /* ==========================================================================
-     8. High-Performance Interactive Connection Network (HTML5 Canvas Background)
+     8. High-Performance Interactive Neon Soundwaves (HTML5 Canvas Background)
      ========================================================================== */
   const canvas = document.getElementById('network-canvas');
   if (canvas) {
     const ctx = canvas.getContext('2d');
-    let particles = [];
     let animationFrameId = null;
+    let time = 0;
     
-    // Mouse coords for network attraction
-    let netMouse = { x: null, y: null, radius: 150 };
+    // Mouse coords for soundwave excitation
+    let netMouse = { x: null, y: null, radius: 220 };
     
     window.addEventListener('mousemove', (e) => {
       netMouse.x = e.clientX;
@@ -767,133 +767,285 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Determine screen parameters
     let isMobile = window.innerWidth < 768;
-    let particleCount = isMobile ? 22 : 75;
-    let maxDistance = isMobile ? 80 : 125;
+    
+    // Wave configuration
+    let waves = [];
+    
+    // Floating note config - VERY SPARSE (User requested: "너무 음표가 많지 않게 해줘 적절하게 배경에 섞이게")
+    let floatingNotes = [];
+    let burstParticles = [];
+    
+    const noteChars = ['♪', '♫', '♬', '♩'];
+    const neonColors = [
+      'rgba(167, 139, 250, 1)',  // violet
+      'rgba(99, 102, 241, 1)',   // indigo
+      'rgba(6, 182, 212, 1)',    // cyan
+      'rgba(236, 72, 153, 1)'    // pink
+    ];
+    
+    function initWaves() {
+      waves = [
+        {
+          color: 'rgba(167, 139, 250, 1)',
+          amplitude: isMobile ? 12 : 28,
+          frequency: isMobile ? 0.003 : 0.002,
+          speed: 0.008,
+          phase: 0,
+          yOffset: 0.5 // center height percentage
+        },
+        {
+          color: 'rgba(99, 102, 241, 1)',
+          amplitude: isMobile ? 8 : 18,
+          frequency: isMobile ? 0.005 : 0.0035,
+          speed: -0.012,
+          phase: Math.PI * 0.4,
+          yOffset: 0.47
+        },
+        {
+          color: 'rgba(6, 182, 212, 1)',
+          amplitude: isMobile ? 6 : 10,
+          frequency: isMobile ? 0.007 : 0.005,
+          speed: 0.016,
+          phase: Math.PI * 0.8,
+          yOffset: 0.53
+        }
+      ];
+      
+      // If mobile, keep it simple with 2 waves instead of 3
+      if (isMobile) {
+        waves = waves.slice(0, 2);
+      }
+    }
+    
+    class FloatingNote {
+      constructor(initY = false) {
+        this.reset(initY);
+      }
+      
+      reset(initY = false) {
+        this.x = Math.random() * canvas.width;
+        this.y = initY ? Math.random() * canvas.height : canvas.height + Math.random() * 150 + 20;
+        this.vy = -(Math.random() * 0.35 + 0.15); // very slow drift upward
+        this.size = Math.random() * 8 + 14; // 14px to 22px (perfect visibility)
+        this.char = noteChars[Math.floor(Math.random() * noteChars.length)];
+        
+        // Increase opacity so they are clearly visible but still elegant and subtle
+        this.alpha = Math.random() * 0.18 + 0.18; 
+        
+        this.angle = (Math.random() - 0.5) * 0.4;
+        this.angleSpeed = (Math.random() - 0.5) * 0.005;
+        this.swaySpeed = Math.random() * 0.008 + 0.003;
+        this.swayWidth = Math.random() * 12 + 6;
+        this.baseX = this.x;
+        
+        // 85% chance of being note, 15% chance of being neon dust circle
+        this.isNote = Math.random() > 0.15;
+        this.color = Math.random() > 0.5 ? 'rgba(167, 139, 250, ' : 'rgba(99, 102, 241, ';
+      }
+      
+      update() {
+        this.y += this.vy;
+        this.x = this.baseX + Math.sin(this.y * this.swaySpeed) * this.swayWidth;
+        this.angle += this.angleSpeed;
+        
+        // Recycle note when it drifts off screen
+        if (this.y < -30) {
+          this.reset(false);
+        }
+      }
+      
+      draw() {
+        if (this.isNote) {
+          ctx.save();
+          ctx.translate(this.x, this.y);
+          ctx.rotate(this.angle);
+          ctx.font = `${this.size}px 'Outfit', 'Inter', sans-serif`;
+          ctx.fillStyle = this.color + this.alpha + ')';
+          ctx.fillText(this.char, 0, 0);
+          ctx.restore();
+        } else {
+          // Subtle neon dust circle
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.size * 0.18, 0, Math.PI * 2);
+          ctx.fillStyle = this.color + (this.alpha * 1.5) + ')';
+          ctx.fill();
+        }
+      }
+    }
+    
+    class BurstParticle {
+      constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        const angle = Math.random() * Math.PI * 2;
+        const speed = Math.random() * 2.8 + 1.2;
+        this.vx = Math.cos(angle) * speed;
+        this.vy = Math.sin(angle) * speed;
+        this.size = Math.random() * 3 + 2.5;
+        this.life = Math.random() * 25 + 35; // 35-60 frames
+        this.maxLife = this.life;
+        this.color = neonColors[Math.floor(Math.random() * neonColors.length)];
+        this.char = Math.random() > 0.7 ? noteChars[Math.floor(Math.random() * noteChars.length)] : null;
+      }
+      
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+        this.vx *= 0.94; // friction
+        this.vy *= 0.94;
+        this.life--;
+      }
+      
+      draw() {
+        const alpha = Math.max(0, this.life / this.maxLife);
+        
+        if (this.char) {
+          ctx.save();
+          ctx.translate(this.x, this.y);
+          ctx.font = `12px 'Outfit', 'Inter', sans-serif`;
+          ctx.fillStyle = this.color.replace('1)', `${alpha * 0.5})`);
+          ctx.fillText(this.char, 0, 0);
+          ctx.restore();
+        } else {
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+          
+          // Glow effect (only on desktop for 60fps)
+          if (!isMobile) {
+            ctx.shadowBlur = 12;
+            ctx.shadowColor = this.color;
+          }
+          
+          ctx.fillStyle = this.color.replace('1)', `${alpha * 0.6})`);
+          ctx.fill();
+          ctx.shadowBlur = 0; // reset
+        }
+      }
+    }
+    
+    function initFloatingNotes() {
+      floatingNotes = [];
+      // Keep it balanced: 16 on desktop, 8 on mobile
+      const count = isMobile ? 8 : 16;
+      for (let i = 0; i < count; i++) {
+        floatingNotes.push(new FloatingNote(true));
+      }
+    }
     
     function resizeCanvas() {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
       isMobile = window.innerWidth < 768;
-      particleCount = isMobile ? 22 : 75;
-      maxDistance = isMobile ? 80 : 125;
-      initParticles();
+      initWaves();
+      initFloatingNotes();
     }
     
-    class Particle {
-      constructor(x, y, isTemporary = false) {
-        this.x = x || Math.random() * canvas.width;
-        this.y = y || Math.random() * canvas.height;
-        this.vx = (Math.random() - 0.5) * (isTemporary ? 2.5 : 0.6);
-        this.vy = (Math.random() - 0.5) * (isTemporary ? 2.5 : 0.6);
-        this.baseSize = Math.random() * 2 + 1;
-        this.size = this.baseSize;
-        this.color = Math.random() > 0.5 ? 'rgba(167, 139, 250, ' : 'rgba(99, 102, 241, ';
-        this.alpha = isTemporary ? 1.0 : Math.random() * 0.4 + 0.2;
-        this.isTemporary = isTemporary;
-        this.life = isTemporary ? 80 : null; // frames
-      }
-      
-      update() {
-        // Drifting motion
-        this.x += this.vx;
-        this.y += this.vy;
-        
-        // Bounce off screen boundaries
-        if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
-        if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
-        
-        // Mouse gravity pull (only for permanent particles on desktop)
-        if (!this.isTemporary && netMouse.x !== null && !isMobile) {
-          const dx = netMouse.x - this.x;
-          const dy = netMouse.y - this.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          
-          if (dist < netMouse.radius) {
-            const force = (netMouse.radius - dist) / netMouse.radius;
-            // Gently pull toward mouse
-            this.x += (dx / dist) * force * 0.8;
-            this.y += (dy / dist) * force * 0.8;
-            this.size = this.baseSize * (1 + force * 0.6);
-          } else {
-            this.size = this.baseSize;
-          }
-        }
-        
-        // Handle life cycles for temporary click particles
-        if (this.isTemporary) {
-          this.life--;
-          this.alpha = Math.max(0, this.life / 80);
-        }
-      }
-      
-      draw() {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fillStyle = this.color + this.alpha + ')';
-        ctx.shadowBlur = this.isTemporary ? 8 : 0;
-        ctx.shadowColor = 'rgba(167, 139, 250, 0.5)';
-        ctx.fill();
-        ctx.shadowBlur = 0; // reset
-      }
-    }
-    
-    function initParticles() {
-      particles = [];
-      for (let i = 0; i < particleCount; i++) {
-        particles.push(new Particle());
-      }
-    }
-    
-    // Spawn temporary neon elements on screen click
+    // Spawn neat radial audio beat bursts on screen click
     window.addEventListener('click', (e) => {
-      // Spawn small burst of network nodes
-      const count = isMobile ? 4 : 8;
+      // Don't spawn if clicking interactive header links or buttons
+      if (e.target.closest('a, button, input, textarea, .survey-card, label')) return;
+      
+      const count = isMobile ? 6 : 12;
       for (let i = 0; i < count; i++) {
-        particles.push(new Particle(e.clientX, e.clientY, true));
+        burstParticles.push(new BurstParticle(e.clientX, e.clientY));
       }
     });
     
-    function drawLines() {
-      // connecting lines (disable on mobile for high-performance fluid scroll)
-      if (isMobile) return;
+    function drawSoundwaves() {
+      time += 0.05;
       
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-          const p1 = particles[i];
-          const p2 = particles[j];
-          const dx = p1.x - p2.x;
-          const dy = p1.y - p2.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
+      waves.forEach((wave) => {
+        ctx.beginPath();
+        
+        // Horizontal gradient that fades completely at the screen borders (left & right)
+        // This is a premium design detail to ensure visual elegance.
+        const grad = ctx.createLinearGradient(0, 0, canvas.width, 0);
+        const coreColor = wave.color.replace('1)', '0.14)');
+        const midColor = wave.color.replace('1)', '0.38)');
+        grad.addColorStop(0, 'rgba(0,0,0,0)');
+        grad.addColorStop(0.15, coreColor);
+        grad.addColorStop(0.5, midColor);
+        grad.addColorStop(0.85, coreColor);
+        grad.addColorStop(1, 'rgba(0,0,0,0)');
+        
+        wave.phase += wave.speed;
+        
+        // Base line moves slowly in a wavy path vertically to make it drift organically (User requested: "기본적으로 좀 움직이게")
+        const baseline = canvas.height * wave.yOffset + Math.sin(time * 0.04 + wave.phase) * (isMobile ? 12 : 28);
+        const step = isMobile ? 8 : 3; // mobile skips points for performance
+        
+        for (let x = 0; x <= canvas.width; x += step) {
+          // Standard audio wave formula
+          let angle = x * wave.frequency + wave.phase;
           
-          if (dist < maxDistance) {
-            // Line alpha fades as distance gets larger
-            const alpha = (1 - dist / maxDistance) * 0.12 * Math.min(p1.alpha, p2.alpha);
-            ctx.beginPath();
-            ctx.moveTo(p1.x, p1.y);
-            ctx.lineTo(p2.x, p2.y);
-            ctx.strokeStyle = `rgba(167, 139, 250, ${alpha})`;
-            ctx.lineWidth = 0.8;
-            ctx.stroke();
+          // Organic breathing amplitude
+          let amp = wave.amplitude + Math.sin(time * 0.08 + wave.phase * 2) * (isMobile ? 2.5 : 7);
+          
+          let yOffset = 0;
+          
+          // Mouse cursor wave excitement (local frequency amplitude multiplier & vertical attraction pull)
+          if (netMouse.x !== null && netMouse.y !== null) {
+            const dx = Math.abs(netMouse.x - x);
+            if (dx < netMouse.radius) {
+              const intensity = (netMouse.radius - dx) / netMouse.radius;
+              const smoothIntensity = Math.pow(intensity, 2.2); // sharp exponential dropoff
+              
+              // 1. Local amplitude boost
+              amp += (isMobile ? 12 : 36) * smoothIntensity;
+              
+              // 2. Inject active sound waves ripple at the cursor
+              angle += Math.sin(x * 0.02 + time * 0.35) * 1.8 * smoothIntensity;
+              
+              // 3. Vertical attraction pull (attracts sound wave to cursor Y)
+              const yDiff = netMouse.y - baseline;
+              yOffset += yDiff * smoothIntensity * 0.55;
+            }
+          }
+          
+          const y = baseline + Math.sin(angle) * amp + yOffset;
+          
+          if (x === 0) {
+            ctx.moveTo(x, y);
+          } else {
+            ctx.lineTo(x, y);
           }
         }
-      }
+        
+        ctx.strokeStyle = grad;
+        ctx.lineWidth = isMobile ? 1.2 : 1.8;
+        
+        // Add subtle neon glow to waves on desktop
+        if (!isMobile) {
+          ctx.shadowBlur = 8;
+          ctx.shadowColor = wave.color.replace('1)', '0.35)');
+        }
+        
+        ctx.stroke();
+        ctx.shadowBlur = 0; // reset
+      });
     }
     
     function animateNetwork() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       
-      // Update and draw particles
-      particles.forEach((p, idx) => {
-        p.update();
-        p.draw();
-        
-        // Remove temporary particles when dead
-        if (p.isTemporary && p.life <= 0) {
-          particles.splice(idx, 1);
-        }
+      // 1. Draw floating music notes (behind sound waves for depth)
+      floatingNotes.forEach((note) => {
+        note.update();
+        note.draw();
       });
       
-      drawLines();
+      // 2. Draw active soundwaves
+      drawSoundwaves();
+      
+      // 3. Draw click burst particles (foreground)
+      for (let i = burstParticles.length - 1; i >= 0; i--) {
+        const p = burstParticles[i];
+        p.update();
+        p.draw();
+        if (p.life <= 0) {
+          burstParticles.splice(i, 1);
+        }
+      }
       
       animationFrameId = requestAnimationFrame(animateNetwork);
     }
